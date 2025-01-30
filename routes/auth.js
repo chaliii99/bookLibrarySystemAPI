@@ -1,21 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const User = require("../models/User"); // Assuming User model is in models/User.js
 
-// example users data
-const users = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: " john@example.com",
-    password: "password",
-  },
-  {
-    id: 2,
-    name: "Jane Doe",
-    email: " jane@example.com",
-    password: "password",
-  },
-];
+
 
 // login
 router.post("/login", async (req, res) => {
@@ -26,7 +13,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Please enter all fields" });
     }
 
-    const user = await users.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ error: "Invalid credentials" });
     }
@@ -50,12 +37,12 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ error: "Please enter all fields" });
     }
 
-    const user = await users.findOne({ email });
+    const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ error: "User already exists" });
     }
 
-    const newUser = new users({ name, email, password });
+    const newUser = new User({ name, email, password });
     await newUser.save();
 
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
