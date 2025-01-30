@@ -13,7 +13,7 @@ async function search(query) {
 }
 
 async function createBook(data) {
-  const { title, genre, createdAt } = data
+  const { title, genre, createdAt } = data;
   if (title && genre && createdAt) {
     const book = new Book({
       title: data.title,
@@ -49,7 +49,7 @@ async function updateBook(id, data) {
 }
 
 async function deleteBook(id) {
-  const book = await Book.findById(req.params.id);
+  const book = await Book.findById(id);
   if (book) {
     await book.remove();
     return "Delete success!!";
