@@ -1,9 +1,7 @@
 const Book = require("../models/book");
 
 async function getBooks() {
-  const books = await Book.find();
-  // Return the books in the response
-  res.json(books);
+  return await Book.find(query);
 }
 
 async function search(query) {
@@ -12,11 +10,10 @@ async function search(query) {
     return books;
   }
   return null;
-  // Return the books in the response
 }
 
 async function createBook(data) {
-  const { title, genre, createdAt } = req.body;
+  const { title, genre, createdAt } = data
   if (title && genre && createdAt) {
     const book = new Book({
       title: data.title,
@@ -26,7 +23,7 @@ async function createBook(data) {
     await book.save();
     return book;
   }
-  return null;
+  throw new Error("Missing required fields");
 }
 
 async function getBookById(id) {
@@ -35,7 +32,7 @@ async function getBookById(id) {
   if (book) {
     return book;
   }
-  return null;
+  throw new Error("Book not found");
 }
 
 async function updateBook(id, data) {
@@ -48,16 +45,16 @@ async function updateBook(id, data) {
     await book.save();
     return book;
   }
-  return null;
+  throw new Error("Book not found");
 }
 
 async function deleteBook(id) {
   const book = await Book.findById(req.params.id);
   if (book) {
     await book.remove();
-    return "delete success!!";
+    return "Delete success!!";
   }
-  return null;
+  throw new Error("Book not found");
 }
 
 module.exports = {

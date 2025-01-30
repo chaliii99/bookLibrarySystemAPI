@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-
 // example users data
 const users = [
   {
@@ -70,4 +69,3 @@ router.post("/register", async (req, res) => {
   }
 });
 module.exports = router;
-
